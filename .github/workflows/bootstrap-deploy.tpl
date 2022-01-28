@@ -7,7 +7,7 @@ on:
       - 0-bootstrap/modules/*.tf*
       - .github/workflows/bootstrap-deploy.yml
 jobs:
-  deploy-bootstrap:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write

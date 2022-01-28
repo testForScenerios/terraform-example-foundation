@@ -1,4 +1,4 @@
-name: "Execute Bootstrap Terraform Config"
+name: "Execute Org Terraform Config"
 on:
   push:
     branches: [main]
@@ -7,7 +7,7 @@ on:
       - 0-org/modules/*.tf*
       - .github/workflows/org-deploy.yml
 jobs:
-  deploy-bootstrap:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
