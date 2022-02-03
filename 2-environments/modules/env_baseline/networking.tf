@@ -19,6 +19,7 @@
 *****************************************/
 
 module "base_shared_vpc_host_project" {
+  count                       = var.enable_network ? 1 : 0
   source                      = "terraform-google-modules/project-factory/google"
   version                     = "~> 10.1"
   random_project_id           = "true"
@@ -52,6 +53,7 @@ module "base_shared_vpc_host_project" {
 }
 
 module "restricted_shared_vpc_host_project" {
+  count                       = var.enable_network ? 1 : 0
   source                      = "terraform-google-modules/project-factory/google"
   version                     = "~> 10.1"
   random_project_id           = "true"

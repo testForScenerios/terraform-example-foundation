@@ -3,8 +3,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 0-org/*.tf*
-      - 0-org/modules/*.tf*
+      - 1-org/*.tf
+      - 1-org/modules/*.tf*
       - .github/workflows/org-deploy.yml
 jobs:
   deploy:
@@ -21,10 +21,10 @@ jobs:
         uses: 'google-github-actions/auth@v0.5.0'
         with:
           token_format: 'access_token'
-          workload_identity_provider: WIF_PROVIDER_ID
-          service_account: SERVICE_ACCOUNT
-      - id: 'apply_bootstrap'
-        name: 'Terraform Apply - Bootstrap'
+          workload_identity_provider: projects/649069422843/locations/global/workloadIdentityPools/wif-gh-pool/providers/wif-gh-provider
+          service_account: org-terraform@prj-b-seed-d0b9.iam.gserviceaccount.com
+      - id: 'apply'
+        name: 'Terraform Apply - Organization'
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
