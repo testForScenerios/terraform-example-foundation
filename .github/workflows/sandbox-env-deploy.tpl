@@ -1,11 +1,11 @@
-name: "Execute Org Terraform Config"
+name: "Execute Sandbox Env Terraform Config"
 on:
   push:
     branches: [main]
     paths:
-      - 1-org/*.tf
-      - 1-org/modules/*.tf*
-      - .github/workflows/org-deploy.yml
+      - 2-environments/sandbox/*.tf*
+      - 2-environments/modules/env_baseline/*.tf*
+      - .github/workflows/sandbox-env-deploy.yml
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,8 +24,8 @@ jobs:
           workload_identity_provider: WIF_PROVIDER_ID
           service_account: SERVICE_ACCOUNT
       - id: 'apply'
-        name: 'Terraform Apply - Organization'
+        name: 'Terraform Apply - Sandbox Env'
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
-          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 1-org/ && terraform init && terraform apply -var-file=org.tfvars -auto-approve"
+          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/sandbox && terraform init && terraform apply -var-file=environments.tfvars -auto-approve"

@@ -18,47 +18,12 @@
   Projects for Shared VPCs
 *****************************************/
 
-module "base_shared_vpc_host_project" {
+module "shared_vpc_host_project" {
   count                       = var.enable_network ? 1 : 0
   source                      = "terraform-google-modules/project-factory/google"
-  version                     = "~> 10.1"
+  version                     = "~> 11.3"
   random_project_id           = "true"
-  impersonate_service_account = var.terraform_service_account
-  name                        = format("%s-%s-shared-base", var.project_prefix, var.environment_code)
-  org_id                      = var.org_id
-  billing_account             = var.billing_account
-  folder_id                   = google_folder.env.id
-  disable_services_on_destroy = false
-  activate_apis = [
-    "compute.googleapis.com",
-    "dns.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "container.googleapis.com",
-    "logging.googleapis.com",
-    "billingbudgets.googleapis.com"
-  ]
-
-  labels = {
-    environment       = var.env
-    application_name  = "base-shared-vpc-host"
-    billing_code      = "1234"
-    primary_contact   = "example1"
-    secondary_contact = "example2"
-    business_code     = "abcd"
-    env_code          = var.environment_code
-  }
-  budget_alert_pubsub_topic   = var.base_network_project_alert_pubsub_topic
-  budget_alert_spent_percents = var.base_network_project_alert_spent_percents
-  budget_amount               = var.base_network_project_budget_amount
-}
-
-module "restricted_shared_vpc_host_project" {
-  count                       = var.enable_network ? 1 : 0
-  source                      = "terraform-google-modules/project-factory/google"
-  version                     = "~> 10.1"
-  random_project_id           = "true"
-  impersonate_service_account = var.terraform_service_account
-  name                        = format("%s-%s-shared-restricted", var.project_prefix, var.environment_code)
+  name                        = format("%s-%s-shared-vpc", var.project_prefix, var.environment_code)
   org_id                      = var.org_id
   billing_account             = var.billing_account
   folder_id                   = google_folder.env.id
@@ -76,14 +41,14 @@ module "restricted_shared_vpc_host_project" {
 
   labels = {
     environment       = var.env
-    application_name  = "restricted-shared-vpc-host"
+    application_name  = "shared-vpc-host"
     billing_code      = "1234"
     primary_contact   = "example1"
     secondary_contact = "example2"
     business_code     = "abcd"
     env_code          = var.environment_code
   }
-  budget_alert_pubsub_topic   = var.restricted_network_project_alert_pubsub_topic
-  budget_alert_spent_percents = var.restricted_network_project_alert_spent_percents
-  budget_amount               = var.restricted_network_project_budget_amount
+  budget_alert_pubsub_topic   = var.network_project_alert_pubsub_topic
+  budget_alert_spent_percents = var.network_project_alert_spent_percents
+  budget_amount               = var.network_project_budget_amount
 }
