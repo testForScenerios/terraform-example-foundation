@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-// Must include the domain of the organization you are deploying the foundation.
-domains_to_allow = ["example.com"]
-
-billing_data_users = "gcp-billing-admins@example.com"
-
-audit_data_users = "gcp-security-admins@example.com"
+billing_account = "000000-000000-000000"
 
 org_id = "000000000000"
 
-billing_account = "000000-000000-000000"
-
-default_region = "us-central1"
-
-scc_notification_name = "scc-notify"
-
-enable_hub_and_spoke = true
-
-create_access_context_manager_access_policy = true
-
 // Optional - for an organization with existing projects or for development/validation.
-// Must be the same value used in step 0-bootstrap.
+// Must be the same value used in previous steps.
 //parent_folder = "01234567890"
-
-//scc_notification_filter = "state=\\\"ACTIVE\\\""
-
-

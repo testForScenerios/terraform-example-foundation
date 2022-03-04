@@ -14,29 +14,21 @@
  * limitations under the License.
  */
 
-// Must include the domain of the organization you are deploying the foundation.
-domains_to_allow = ["example.com"]
+org_id = "790475255155"
 
-billing_data_users = "gcp-billing-admins@example.com"
+billing_account = "014B3B-FEFA55-F8DEA8"
 
-audit_data_users = "gcp-security-admins@example.com"
+group_org_admins = "gcp-organization-admins@cloudfoundationtoolkit.com"
 
-org_id = "000000000000"
+group_billing_admins = "gcp-billing-admins@cloudfoundationtoolkit.com"
 
-billing_account = "000000-000000-000000"
+default_region = "us-east1"
 
-default_region = "us-central1"
-
-scc_notification_name = "scc-notify"
-
-enable_hub_and_spoke = true
-
-create_access_context_manager_access_policy = true
+github_repo = "scalesec/terraform-example-foundation"
 
 // Optional - for an organization with existing projects or for development/validation.
-// Must be the same value used in step 0-bootstrap.
+// Uncomment this variable to place all the example foundation resources under
+// the provided folder instead of the root organization.
+// The variable value is the numeric folder ID
+// The folder must already exist.
 //parent_folder = "01234567890"
-
-//scc_notification_filter = "state=\\\"ACTIVE\\\""
-
-
