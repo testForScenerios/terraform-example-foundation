@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-billing_account = "000000-000000-000000"
+org_id = "790475255155"
 
-org_id = "000000000000"
+billing_account = "014B3B-FEFA55-F8DEA8"
 
 // Optional - for an organization with existing projects or for development/validation.
 // Must be the same value used in previous steps.

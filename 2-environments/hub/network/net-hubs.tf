@@ -15,11 +15,11 @@
  */
 
 locals {
-  net_hub_project_id           = try(data.google_projects.base_net_hub[0].projects[0].project_id, null)
+  net_hub_project_id           = try(data.google_projects.net_hub[0].projects[0].project_id, null)
   /*
    * Base network ranges
    */
-  nethub_subnet_primary_ranges = {
+  net_hub_subnet_primary_ranges = {
     (var.default_region1) = "10.0.0.0/24"
     (var.default_region2) = "10.1.0.0/24"
   }
@@ -34,12 +34,16 @@ data "google_projects" "net_hub" {
   filter = "parent.id:${split("/", data.google_active_folder.common.name)[1]} labels.application_name=org-net-hub lifecycleState=ACTIVE"
 }
 
+data "google_project" "network_host_project" {
+  project_id = data.google_projects.net_hub[0].projects[0].project_id
+}
+
 /******************************************
  Network Hub VPC
 *****************************************/
 
-module "nethub_shared_vpc" {
-  source                        = "../../../modules/base_shared_vpc"
+module "net_hub_shared_vpc" {
+  source                        = "../../../modules/shared_vpc"
   count                         = var.enable_hub_and_spoke ? 1 : 0
   project_id                    = local.net_hub_project_id
   environment_code              = local.environment_code
@@ -64,15 +68,15 @@ module "nethub_shared_vpc" {
   subnets = [
     {
       subnet_name           = "sb-c-shared-net-hub-${var.default_region1}"
-      subnet_ip             = local.base_subnet_primary_ranges[var.default_region1]
+      subnet_ip             = local.net_hub_subnet_primary_ranges[var.default_region1]
       subnet_region         = var.default_region1
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
       description           = "Network hub subnet for ${var.default_region1}"
     },
     {
-      subnet_name           = "sb-c-shared-base-hub-${var.default_region2}"
-      subnet_ip             = local.base_subnet_primary_ranges[var.default_region2]
+      subnet_name           = "sb-c-shared-net-hub-${var.default_region2}"
+      subnet_ip             = local.net_hub_subnet_primary_ranges[var.default_region2]
       subnet_region         = var.default_region2
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging

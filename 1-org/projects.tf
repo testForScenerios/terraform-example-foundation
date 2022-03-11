@@ -143,7 +143,7 @@ module "security" {
 
   labels = {
     environment       = "production"
-    application_name  = "org-scc"
+    application_name  = "org-security"
     billing_code      = "1234"
     primary_contact   = "example1"
     secondary_contact = "example2"
@@ -193,7 +193,7 @@ module "dns_hub" {
 }
 
 /******************************************
-  Project for Network Hub
+  Project for Base Network Hub
 *****************************************/
 
 module "network_hub" {
@@ -218,7 +218,7 @@ module "network_hub" {
 
   labels = {
     environment       = "production"
-    application_name  = "org-base-net-hub"
+    application_name  = "org-net-hub"
     billing_code      = "1234"
     primary_contact   = "example1"
     secondary_contact = "example2"
@@ -230,11 +230,7 @@ module "network_hub" {
   budget_amount               = var.net_hub_project_budget_amount
 }
 
-/******************************************
-  Project for Shared Services Network
-*****************************************/
-
-module "network_hub" {
+module "network_shared_services" {
   source                      = "terraform-google-modules/project-factory/google"
   version                     = "~> 11.3"
   count                       = var.enable_hub_and_spoke ? 1 : 0
@@ -255,13 +251,13 @@ module "network_hub" {
   ]
 
   labels = {
-    environment       = "production"
+    environment       = "shared-services"
     application_name  = "org-net-shared-services"
     billing_code      = "1234"
     primary_contact   = "example1"
     secondary_contact = "example2"
     business_code     = "abcd"
-    env_code          = "p"
+    env_code          = "ss"
   }
   budget_alert_pubsub_topic   = var.net_shared_services_project_alert_pubsub_topic
   budget_alert_spent_percents = var.net_shared_services_project_alert_spent_percents

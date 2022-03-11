@@ -15,6 +15,7 @@
  */
 
 provider "google" {
+  alias = "impersonate"
 
   scopes = [
     "https://www.googleapis.com/auth/cloud-platform",

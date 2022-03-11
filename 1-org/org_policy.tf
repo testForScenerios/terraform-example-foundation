@@ -139,7 +139,7 @@ module "org_allowed_contact_domains" {
   folder_id         = local.folder_id
   constraint        = "constraints/essentialcontacts.allowedContactDomains"
   policy_type       = "list"
-  allow             =  local.contact_domains_to_allow
+  allow             = local.contact_domains_to_allow
   allow_list_length = length(var.domains_to_allow)
 }
 

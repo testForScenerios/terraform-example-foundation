@@ -29,7 +29,7 @@ module "dedicated_interconnect" {
 
   org_id        = var.org_id
   parent_folder = var.parent_folder
-  vpc_name      = "c-net_hub"
+  vpc_name      = "c-net-hub"
 
   region1                                 = var.default_region1
   region1_router1_name                    = module.net_hub_shared_vpc[0].region1_router1.name

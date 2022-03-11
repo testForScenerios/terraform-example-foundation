@@ -36,7 +36,7 @@ module "shared_vpc_host_project" {
     "logging.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "accesscontextmanager.googleapis.com",
-    "billingbudgets.googleapis.com"
+    "billingbudgets.googleapis.com",
   ]
 
   labels = {

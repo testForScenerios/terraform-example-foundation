@@ -15,7 +15,7 @@
  */
 
 module "hierarchical_firewall_policy" {
-  source = "../../modules/hierarchical_firewall_policy/"
+  source = "../../../modules/hierarchical_firewall_policy/"
   parent = data.google_active_folder.common.name
   name   = "common-firewall-rules"
   associations = [

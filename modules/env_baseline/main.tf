@@ -17,3 +17,11 @@
 locals {
   parent = var.parent_id
 }
+
+data "google_projects" "net_hub" {
+  filter = "parent.id:${split("/", data.google_active_folder.common.name)[1]} labels.application_name=org-net-hub lifecycleState=ACTIVE"
+}
+
+data "google_project" "net_hub" {
+  project_id = data.google_projects.net_hub.projects[0].project_id
+}

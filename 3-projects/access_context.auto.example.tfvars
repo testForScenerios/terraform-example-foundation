@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-access_context_manager_policy_id = 000000000000
+access_context_manager_policy_id = 340469432653
 
 perimeter_name = {
-    shared-services =  "sp_ss_shared_default_perimeter_????"
-    non-production  =  "sp_n_shared_default_perimeter_????"
-    production      =  "sp_p_shared_default_perimeter_????"
+    shared-services =  "sp_ss_default_perimeter_0e94",
+    non-production  =  "sp_n_default_perimeter_3af8",
+    production      =  "sp_p_default_perimeter_c2c4",
+    common          =  "sp_c_default_perimeter_c8f9",
 }

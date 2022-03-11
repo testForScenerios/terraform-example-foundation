@@ -18,3 +18,9 @@ output "nethub_project_id" {
   value       = local.dns_hub_project_id
   description = "The DNS hub project ID"
 }
+
+output "nethub_shared_vpc" {
+  value       = module.net_hub_shared_vpc
+  description = "Nethub"
+}
+

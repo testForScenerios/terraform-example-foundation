@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-org_id = "000000000000"
+org_id = "790475255155"
 
-billing_account = "000000-000000-000000"
+billing_account = "014B3B-FEFA55-F8DEA8"
 
-monitoring_workspace_users = "gcp-monitoring-admins@example.com"
+monitoring_workspace_users = "gcp-monitoring-admins@cloudfoundationtoolkit.com"
 
 // Optional - for an organization with existing projects or for development/validation.
 // Must be the same value used in previous steps.

@@ -86,111 +86,57 @@ variable "folder_prefix" {
   default     = "fldr"
 }
 
-variable "base_hub_windows_activation_enabled" {
+variable "net_hub_windows_activation_enabled" {
   type        = bool
   description = "Enable Windows license activation for Windows workloads in Base Hub"
   default     = false
 }
 
-variable "restricted_hub_windows_activation_enabled" {
-  type        = bool
-  description = "Enable Windows license activation for Windows workloads in Restricted Hub."
-  default     = false
-}
-
-variable "base_hub_dns_enable_inbound_forwarding" {
+variable "net_hub_dns_enable_inbound_forwarding" {
   type        = bool
   description = "Toggle inbound query forwarding for Base Hub VPC DNS."
   default     = true
 }
 
-variable "restricted_hub_dns_enable_inbound_forwarding" {
-  type        = bool
-  description = "Toggle inbound query forwarding for Restricted Hub VPC DNS."
-  default     = true
-}
-
-variable "base_hub_dns_enable_logging" {
+variable "net_hub_dns_enable_logging" {
   type        = bool
   description = "Toggle DNS logging for Base Hub VPC DNS."
   default     = true
 }
 
-variable "restricted_hub_dns_enable_logging" {
-  type        = bool
-  description = "Toggle DNS logging for Restricted Hub VPC DNS."
-  default     = true
-}
-
-variable "base_hub_firewall_enable_logging" {
+variable "net_hub_firewall_enable_logging" {
   type        = bool
   description = "Toggle firewall logging for VPC Firewalls in Base Hub VPC."
   default     = true
 }
 
-variable "restricted_hub_firewall_enable_logging" {
-  type        = bool
-  description = "Toggle firewall logging for VPC Firewalls in Restricted Hub VPC."
-  default     = true
-}
-
-variable "base_hub_optional_fw_rules_enabled" {
+variable "net_hub_optional_fw_rules_enabled" {
   type        = bool
   description = "Toggle creation of optional firewall rules: IAP SSH, IAP RDP and Internal & Global load balancing health check and load balancing IP ranges in Base Hub VPC."
   default     = false
 }
 
-variable "restricted_hub_optional_fw_rules_enabled" {
-  type        = bool
-  description = "Toggle creation of optional firewall rules: IAP SSH, IAP RDP and Internal & Global load balancing health check and load balancing IP ranges in Restricted Hub VPC."
-  default     = false
-}
-
-variable "base_hub_nat_enabled" {
+variable "net_hub_nat_enabled" {
   type        = bool
   description = "Toggle creation of NAT cloud router in Base Hub."
   default     = false
 }
 
-variable "restricted_hub_nat_enabled" {
-  type        = bool
-  description = "Toggle creation of NAT cloud router in Restricted Hub."
-  default     = false
-}
-
-variable "base_hub_nat_bgp_asn" {
+variable "net_hub_nat_bgp_asn" {
   type        = number
   description = "BGP ASN for first NAT cloud routes in Base Hub."
   default     = 64514
 }
 
-variable "restricted_hub_nat_bgp_asn" {
-  type        = number
-  description = "BGP ASN for first NAT cloud routes in Restricted Hub."
-  default     = 64514
-}
-
-variable "base_hub_nat_num_addresses_region1" {
+variable "net_hub_nat_num_addresses_region1" {
   type        = number
   description = "Number of external IPs to reserve for first Cloud NAT in Base Hub."
   default     = 2
 }
 
-variable "restricted_hub_nat_num_addresses_region1" {
-  type        = number
-  description = "Number of external IPs to reserve for first Cloud NAT in Restricted Hub."
-  default     = 2
-}
-
-variable "base_hub_nat_num_addresses_region2" {
+variable "net_hub_nat_num_addresses_region2" {
   type        = number
   description = "Number of external IPs to reserve for second Cloud NAT in Base Hub."
-  default     = 2
-}
-
-variable "restricted_hub_nat_num_addresses_region2" {
-  type        = number
-  description = "Number of external IPs to reserve for second Cloud NAT in Restricted Hub."
   default     = 2
 }
 
@@ -303,4 +249,30 @@ variable "region2_interconnect2_name" {
 variable "region2_interconnect2_location" {
   type = string
   description = "Name of the interconnect location used in the creation of the Interconnect for the second location of region2"
+}
+
+variable "peer_asn" {
+  type = number
+  description = "Peer BGP Autonomous System Number (ASN)."
+}
+
+variable "peer_name" {
+  type = string
+  description = "Name of this BGP peer. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression a-z?"
+}
+
+variable "members" {
+  type        = list(string)
+  description = "An allowed list of members (users, service accounts). The signed-in identity originating the request must be a part of one of the provided members. If not specified, a request may come from any user (logged in/not logged in, etc.). Formats: user:{emailid}, serviceAccount:{emailid}"
+}
+
+variable "restricted_services" {
+  type        = list(string)
+  description = "List of services to restrict."
+}
+
+variable "mode" {
+  type        = string
+  description = "Network deployment mode, should be set to `hub` or `spoke` when `enable_hub_and_spoke` architecture chosen, keep as `null` otherwise."
+  default     = "hub"
 }

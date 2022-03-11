@@ -32,7 +32,7 @@ variable "default_region" {
 variable "enable_hub_and_spoke" {
   description = "Enable Hub-and-Spoke architecture."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "billing_data_users" {
@@ -257,20 +257,20 @@ variable "org_audit_logs_project_budget_amount" {
   default     = 1000
 }
 
-variable "scc_notifications_project_alert_spent_percents" {
-  description = "A list of percentages of the budget to alert on when threshold is exceeded for the SCC notifications project."
+variable "security_project_alert_spent_percents" {
+  description = "A list of percentages of the budget to alert on when threshold is exceeded for the security project."
   type        = list(number)
   default     = [0.5, 0.75, 0.9, 0.95]
 }
 
-variable "scc_notifications_project_alert_pubsub_topic" {
-  description = "The name of the Cloud Pub/Sub topic where budget related messages will be published, in the form of `projects/{project_id}/topics/{topic_id}` for the SCC notifications project."
+variable "security_project_alert_pubsub_topic" {
+  description = "The name of the Cloud Pub/Sub topic where budget related messages will be published, in the form of `projects/{project_id}/topics/{topic_id}` for the security project."
   type        = string
   default     = null
 }
 
-variable "scc_notifications_project_budget_amount" {
-  description = "The amount to use as the budget for the SCC notifications project."
+variable "security_project_budget_amount" {
+  description = "The amount to use as the budget for the security project."
   type        = number
   default     = 1000
 }
@@ -305,7 +305,7 @@ variable "gcp_network_viewer" {
   default     = null
 }
 
-variable "gcp_scc_admin" {
+variable "gcp_security_admin" {
   description = "G Suite or Cloud Identity group that can administer Security Command Center."
   type        = string
   default     = null

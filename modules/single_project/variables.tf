@@ -29,11 +29,6 @@ variable "billing_account" {
   type        = string
 }
 
-variable "impersonate_service_account" {
-  description = "Service account email of the account to impersonate to run Terraform"
-  type        = string
-}
-
 variable "project_suffix" {
   description = "The name of the GCP project. Max 16 characters with 3 character business unit code."
   type        = string
@@ -86,7 +81,7 @@ variable "vpc_type" {
 variable "vpc_service_control_attach_enabled" {
   description = "Whether the project will be attached to a VPC Service Control Perimeter"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "vpc_service_control_perimeter_name" {
@@ -122,7 +117,7 @@ variable "project_prefix" {
 variable "enable_hub_and_spoke" {
   description = "Enable Hub-and-Spoke architecture."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "sa_roles" {
@@ -141,4 +136,11 @@ variable "cloudbuild_sa" {
   description = "The Cloud Build SA used for deploying infrastructure in this project. It will impersonate the new default SA created"
   type        = string
   default     = ""
+}
+
+
+variable "svpc_host_project_id" {
+}
+
+variable "project_parent_folder_id" {
 }

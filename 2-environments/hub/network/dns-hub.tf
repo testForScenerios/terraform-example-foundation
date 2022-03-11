@@ -45,37 +45,3 @@ data "google_active_folder" "non-production" {
 data "google_projects" "dns_hub" {
   filter = "parent.id:${split("/", data.google_active_folder.common.name)[1]} labels.application_name=org-dns-hub lifecycleState=ACTIVE"
 }
-
-/******************************************
-  Default DNS Policy
- *****************************************/
-
-resource "google_dns_policy" "default_policy" {
-  project                   = local.dns_hub_project_id
-  name                      = "dp-dns-hub-default-policy"
-  enable_inbound_forwarding = true
-  enable_logging            = var.dns_enable_logging
-  networks {
-    network_url = module.nethub_shared_vpc.network_self_link
-  }
-}
-
-/******************************************
- DNS Forwarding
-*****************************************/
-
-module "dns-forwarding-zone" {
-  source  = "terraform-google-modules/cloud-dns/google"
-  version = "3.0.2"
-
-  project_id = local.dns_hub_project_id
-  type       = "forwarding"
-  name       = "fz-dns-hub"
-  domain     = var.domain
-
-  private_visibility_config_networks = [
-    module.nethub_shared_vpc.network_self_link
-  ]
-  target_name_server_addresses = var.target_name_server_addresses
-}
-

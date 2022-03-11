@@ -47,7 +47,7 @@ locals {
 }
 
 data "google_active_folder" "env" {
-  display_name = "${var.folder_prefix}-${local.env}"
+  display_name = "${var.folder_prefix}-common"
   parent       = local.parent_id
 }
 
@@ -55,27 +55,24 @@ data "google_active_folder" "env" {
   VPC Host Projects
 *****************************************/
 
-data "google_projects" "restricted_host_project" {
-  filter = "parent.id:${split("/", data.google_active_folder.env.name)[1]} labels.application_name=restricted-shared-vpc-host labels.environment=${local.env} lifecycleState=ACTIVE"
+data "google_projects" "network_host_project" {
+  filter = "parent.id:${split("/", data.google_active_folder.env.name)[1]} labels.application_name=org-net-shared-services labels.environment=${local.env} lifecycleState=ACTIVE"
 }
 
-data "google_project" "restricted_host_project" {
-  project_id = data.google_projects.restricted_host_project.projects[0].project_id
+data "google_project" "network_host_project" {
+  project_id = data.google_projects.network_host_project.projects[0].project_id
 }
 
-data "google_projects" "base_host_project" {
-  filter = "parent.id:${split("/", data.google_active_folder.env.name)[1]} labels.application_name=base-shared-vpc-host labels.environment=${local.env} lifecycleState=ACTIVE"
-}
 
 /******************************************
- Base shared VPC
+ Shared VPC
 *****************************************/
 
-module "base_shared_vpc" {
-  source                        = "../../modules/base_shared_vpc"
-  project_id                    = local.base_project_id
+module "shared_vpc" {
+  source                        = "../../../modules/shared_vpc"
+  project_id                    = local.network_project_id
   environment_code              = local.environment_code
-  private_service_cidr          = local.base_private_service_cidr
+  private_service_cidr          = local.network_private_service_cidr
   org_id                        = var.org_id
   parent_folder                 = var.parent_folder
   default_region1               = var.default_region1
@@ -97,16 +94,16 @@ module "base_shared_vpc" {
 
   subnets = [
     {
-      subnet_name           = "sb-${local.environment_code}-shared-base-${var.default_region1}"
-      subnet_ip             = local.base_subnet_primary_ranges[var.default_region1]
+      subnet_name           = "sb-${local.environment_code}-shared-${var.default_region1}"
+      subnet_ip             = local.network_subnet_primary_ranges[var.default_region1]
       subnet_region         = var.default_region1
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
       description           = "First ${local.env} subnet example."
     },
     {
-      subnet_name           = "sb-${local.environment_code}-shared-base-${var.default_region2}"
-      subnet_ip             = local.base_subnet_primary_ranges[var.default_region2]
+      subnet_name           = "sb-${local.environment_code}-shared-${var.default_region2}"
+      subnet_ip             = local.network_subnet_primary_ranges[var.default_region2]
       subnet_region         = var.default_region2
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
@@ -114,8 +111,8 @@ module "base_shared_vpc" {
     }
   ]
   secondary_ranges = {
-    "sb-${local.environment_code}-shared-base-${var.default_region1}" = local.base_subnet_secondary_ranges[var.default_region1]
+    "sb-${local.environment_code}-shared-${var.default_region1}" = local.network_subnet_secondary_ranges[var.default_region1]
   }
-  allow_all_ingress_ranges = local.enable_transitivity ? local.base_hub_subnet_ranges : null
-  allow_all_egress_ranges  = local.enable_transitivity ? local.base_subnet_aggregates : null
+  allow_all_ingress_ranges = local.enable_transitivity ? local.network_subnet_ranges : null
+  allow_all_egress_ranges  = local.enable_transitivity ? local.network_subnet_aggregates : null
 }

@@ -25,7 +25,7 @@ output "monitoring_project_id" {
 }
 
 output "shared_vpc_project_id" {
-  description = "Project for base shared VPC."
+  description = "Project for shared VPC."
   value       = module.env.shared_vpc_project_id
 }
 

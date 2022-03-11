@@ -18,6 +18,7 @@ locals {
   environment_code           = "n"
   env                        = "non-production"
   network_project_id         = data.google_projects.network_host_project.projects[0].project_id
+  network_project_number     = data.google_project.network_host_project.number
   parent_id                  = var.parent_folder != "" ? "folders/${var.parent_folder}" : "organizations/${var.org_id}"
   mode                       = var.enable_hub_and_spoke ? "spoke" : null
   bgp_asn_number             = var.enable_partner_interconnect ? "16550" : "64514"
@@ -46,7 +47,6 @@ locals {
   }
 }
 
-
 data "google_active_folder" "env" {
   display_name = "${var.folder_prefix}-${local.env}"
   parent       = local.parent_id
@@ -70,7 +70,7 @@ data "google_project" "network_host_project" {
 *****************************************/
 
 module "shared_vpc" {
-  source                        = "../../modules/base_shared_vpc"
+  source                        = "../../../modules/shared_vpc"
   project_id                    = local.network_project_id
   environment_code              = local.environment_code
   private_service_cidr          = local.network_private_service_cidr
@@ -100,7 +100,7 @@ module "shared_vpc" {
       subnet_region         = var.default_region1
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
-      description           = "First ${local.env} subnet"
+      description           = "First ${local.env} subnet example."
     },
     {
       subnet_name           = "sb-${local.environment_code}-shared-${var.default_region2}"
@@ -108,12 +108,12 @@ module "shared_vpc" {
       subnet_region         = var.default_region2
       subnet_private_access = "true"
       subnet_flow_logs      = var.subnetworks_enable_logging
-      description           = "Second ${local.env} subnet"
+      description           = "Second ${local.env} subnet example."
     }
   ]
   secondary_ranges = {
-    "sb-${local.environment_code}-shared-${var.default_region1}" = local.base_subnet_secondary_ranges[var.default_region1]
+    "sb-${local.environment_code}-shared-${var.default_region1}" = local.network_subnet_secondary_ranges[var.default_region1]
   }
-  allow_all_ingress_ranges = local.enable_transitivity ? local.base_hub_subnet_ranges : null
-  allow_all_egress_ranges  = local.enable_transitivity ? local.base_subnet_aggregates : null
+  allow_all_ingress_ranges = local.enable_transitivity ? local.network_subnet_ranges : null
+  allow_all_egress_ranges  = local.enable_transitivity ? local.network_subnet_aggregates : null
 }
