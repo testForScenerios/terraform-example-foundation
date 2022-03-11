@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 2-environments/production/*.tf*
+      - 2-environments/production-env.tfvars
+      - 2-environments/env-baseline.tfvars
       - 2-environments/modules/env_baseline/*.tf*
       - .github/workflows/production-env-deploy.yml
 jobs:
@@ -28,4 +30,4 @@ jobs:
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
-          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/production && terraform init && terraform apply -var-file=environments.tfvars -auto-approve"
+          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/production/baseline && terraform init && terraform apply -var-file=env-baseline.tfvars -var-file=production-env.tfvars -auto-approve"

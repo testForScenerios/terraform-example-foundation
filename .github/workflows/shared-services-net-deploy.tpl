@@ -4,7 +4,8 @@ on:
     branches: [main]
     paths:
       - 2-environments/shared-services/network/*.tf
-      - 2-environments/network.tfvars
+      - 2-environments/common-network.tfvars
+      - 2-environments/shared-services-env.tfvars
       - modules/shared_vpc/*.tf*
       - modules/hierachical_firewall_policy/*.tf*
       - .github/workflows/shared-services-net-deploy.yml
@@ -26,8 +27,8 @@ jobs:
           workload_identity_provider: WIF_PROVIDER_ID
           service_account: SERVICE_ACCOUNT
       - id: 'apply'
-        name: 'Terraform Apply - Production Net'
+        name: 'Terraform Apply - Shared Services Net'
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
-          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/shared-services/network && terraform init && terraform apply -auto-approve"
+          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/shared-services/network && terraform init && terraform apply -var-file=common-network.tfvars -var-file=shared-services-env.tfvars -auto-approve"

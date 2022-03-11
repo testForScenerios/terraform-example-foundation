@@ -4,7 +4,8 @@ on:
     branches: [main]
     paths:
       - 2-environments/hub/network/*.tf
-      - 2-environments/hub/network/network.tfvars
+      - 2-environments/hub/network/common-network.tfvars
+      - 2-environments/hub-network.tfvars
       - modules/dedicated_interconnect/*.tf*
       - modules/hierachical_firewall_policy/*.tf*
       - modules/partner_interconnect/*.tf*
@@ -35,4 +36,4 @@ jobs:
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
-          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/hub/network && terraform init && terraform apply -var-file=network.tfvars -auto-approve"
+          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/hub/network && terraform init && terraform apply -var-file=hub-network.tfvars -var-file=common-network.tfvars -auto-approve"

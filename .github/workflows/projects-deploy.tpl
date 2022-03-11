@@ -1,9 +1,11 @@
-name: "Execute Shared Services Network Terraform Config"
+name: "Execute Project Factory Terraform"
 on:
   push:
     branches: [main]
     paths:
-      - 3-projects/*/*.tf
+      - 3-projects/*/*/*.tf
+      - 3-projects/*/*/*.tfvars
+      - helper/project-deploy-workflow.sh
       - modules/single_project/*.tf*
       - .github/workflows/projects-deploy.yml
 jobs:
@@ -17,6 +19,8 @@ jobs:
       - id: checkout
         name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0.5.0'
@@ -24,13 +28,8 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: WIF_PROVIDER_ID
           service_account: SERVICE_ACCOUNT
-      - id: 'Terraform Apply - Projects'
+      - id: 'apply'
+        name: 'Terraform Apply - Projects'
         run: |
           export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }}
-          for file in $(git log -1 --pretty=format: --name-only --diff-filter=d | sort -u)
-          do
-            dir=$(dirname $file)
-            cd $dir/
-            terraform init
-            terraform apply -auto-approve
-          done
+          ./helper/project-deploy-workflow.sh

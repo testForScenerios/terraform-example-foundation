@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 2-environments/production/network/*.tf
+      - 2-environments/common-network.tfvars
       - modules/shared_vpc/*.tf*
       - modules/hierachical_firewall_policy/*.tf*
       - .github/workflows/production-net-deploy.yml
@@ -29,4 +30,4 @@ jobs:
         uses: docker://gcr.io/cloud-foundation-cicd/cft/developer-tools:1.0
         with:
           entrypoint: /bin/bash
-          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/production/network && terraform init && terraform apply -auto-approve"
+          args: -c "export GOOGLE_OAUTH_ACCESS_TOKEN=${{ steps.auth.outputs.access_token }} && cd 2-environments/production/network && terraform init && terraform apply -var-file=common-network.tfvars -auto-approve"
